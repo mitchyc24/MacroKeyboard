@@ -1,11 +1,11 @@
 # Example profile for MacroKeyboard
-# Format: <GPIO pin>: <KEYCODE>[, <KEYCODE>, ...]
+# Format: <GPIO pin>: <KEYCODE>[, <KEYCODE>, ...] or mouse actions
 7: A
-9: B
+9: R_CLICK, 500, MOUSE_MOVE_REL(50,50), 500, L_CLICK, 500, MOUSE_MOVE_REL(200,400), 500, L_CLICK
 11: C
 13: CONTROL, Z
 14: CONTROL, Y
 17: F1
 18: F2
 20: F3
-22: F4
+22: R_CLICK, 500, MOUSE_MOVE_REL(50,50), 500, L_CLICK, 500, MOUSE_MOVE_REL(200,400), 500, L_CLICK
