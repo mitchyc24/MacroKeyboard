@@ -1,14 +1,32 @@
-import machine
 import time
+import board
+import digitalio
 import usb_hid
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keycode import Keycode
 
-# GPIO pins based on your layout
-gpio_pins = [7, 9, 11, 13, 14, 17, 18, 20, 22]
+# Map GPIO numbers to board pin names
+pin_map = {
+    7: board.GP7,
+    9: board.GP9,
+    11: board.GP11,
+    13: board.GP13,
+    14: board.GP14,
+    17: board.GP17,
+    18: board.GP18,
+    20: board.GP20,
+    22: board.GP22,
+}
+
+gpio_pins = list(pin_map.keys())
 
 # Initialize all pins as inputs with pull-up resistors
-buttons = {pin: machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP) for pin in gpio_pins}
+buttons = {}
+for pin, board_pin in pin_map.items():
+    btn = digitalio.DigitalInOut(board_pin)
+    btn.direction = digitalio.Direction.INPUT
+    btn.pull = digitalio.Pull.UP
+    buttons[pin] = btn
 
 # Map each button to a specific key or key combination
 button_key_map = {
@@ -27,17 +45,17 @@ button_key_map = {
 keyboard = Keyboard(usb_hid.devices)
 
 # Store the last state of each button to detect changes
-last_states = {pin: 1 for pin in gpio_pins}  # Default state is 1 (not pressed)
+last_states = {pin: True for pin in gpio_pins}  # Default state is True (not pressed)
 
 print("Macro keyboard script started. Press buttons to send keypresses.")
 
 while True:
     for pin, button in buttons.items():
-        current_state = button.value()
-        if current_state == 0 and last_states[pin] == 1:  # Detect falling edge (button press)
+        current_state = button.value
+        if not current_state and last_states[pin]:  # Detect falling edge (button press)
             print(f"Button on GP{pin} pressed. Sending key(s): {button_key_map[pin]}")
             keyboard.press(*button_key_map[pin])  # Send the key(s)
-        elif current_state == 1 and last_states[pin] == 0:  # Detect rising edge (button release)
+        elif current_state and not last_states[pin]:  # Detect rising edge (button release)
             keyboard.release(*button_key_map[pin])  # Release the key(s)
         last_states[pin] = current_state  # Update the last state
 
