@@ -1,15 +1,123 @@
 # MacroKeyboard
 
-A customizable macro keyboard built for the Raspberry Pi Pico using CircuitPython. This project allows you to assign keyboard shortcuts or keypresses to physical buttons, making repetitive tasks faster and easier.
+A customizable macro keyboard built for the Raspberry Pi Pico using CircuitPython. This project allows you to assign complex macro sequences to physical buttons, including keyboard shortcuts, mouse commands with absolute positioning, and text input.
 
 ---
 
 ## Features
 
 - 9 programmable buttons
-- Supports single keys and key combinations (e.g., Ctrl+Z)
-- Easy to update and customize
-- Plug-and-play USB HID device
+- **New: Full keyboard and mouse support with absolute positioning**
+- **New: Complex macro sequences with delays and multiple actions**
+- **New: PC-based profiles for enhanced customization**
+- Supports single keys, key combinations, and complex sequences
+- Mouse click and movement commands with absolute coordinates
+- Text typing and scrolling commands
+- Easy to update and customize profiles on your PC
+
+---
+
+## Architecture
+
+### Version 2.0: PC-Based Macro Service (Current)
+
+The MacroKeyboard now uses a split architecture for enhanced capabilities:
+
+1. **Raspberry Pi Pico (firmware_serial.py)**: Detects button presses and sends events via serial communication
+2. **PC Service (pc_service.py)**: Receives button events and executes complex macros including mouse commands
+
+This architecture enables:
+- **Absolute mouse positioning** (not possible with HID-only approach)
+- **Complex macro sequences** with delays and multiple actions
+- **PC-based profile storage** for easier management
+- **Enhanced action types**: typing, mouse movement, scrolling, etc.
+
+### Legacy Versions
+
+- **keyboard.py**: Original version with hardcoded key mappings (HID-only)
+- **keyboard_v2.py**: Config-based version with profiles stored on device (HID-only)
+
+---
+
+## Quick Start
+
+### 1. Install PC Service Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Upload Firmware to Pico
+
+Follow the steps in [Updating the Code](#updating-the-code-on-the-raspberry-pi-pico) section to upload `firmware_serial.py` to your Pico.
+
+### 3. Start the PC Service
+
+```bash
+python pc_service.py
+```
+
+The service will automatically detect your MacroKeyboard and load the default profile.
+
+### 4. Customize Your Macros
+
+Edit `profiles/pc_profile.json` to customize your button mappings. See [Profile Format](#profile-format) for details.
+
+---
+
+## Profile Format
+
+Profiles are stored as JSON files with enhanced action support:
+
+```json
+{
+  "7": [
+    {"type": "key", "key": "a"}
+  ],
+  "22": [
+    {"type": "mouse_move", "x": 500, "y": 300},
+    {"type": "delay", "duration": 0.1},
+    {"type": "mouse_click", "button": "left"}
+  ]
+}
+```
+
+### Supported Action Types
+
+- **`key`**: Single key press
+  ```json
+  {"type": "key", "key": "f1"}
+  ```
+
+- **`key_combo`**: Key combination
+  ```json
+  {"type": "key_combo", "keys": ["ctrl", "z"]}
+  ```
+
+- **`type`**: Type text
+  ```json
+  {"type": "type", "text": "Hello World!"}
+  ```
+
+- **`mouse_move`**: Move mouse to absolute position
+  ```json
+  {"type": "mouse_move", "x": 100, "y": 200}
+  ```
+
+- **`mouse_click`**: Click mouse button
+  ```json
+  {"type": "mouse_click", "button": "left", "x": 100, "y": 200}
+  ```
+
+- **`scroll`**: Scroll wheel
+  ```json
+  {"type": "scroll", "clicks": 3}
+  ```
+
+- **`delay`**: Wait/pause
+  ```json
+  {"type": "delay", "duration": 1.0}
+  ```
 
 ---
 
@@ -44,6 +152,15 @@ Button layout and GPIO pin mapping:
 ---
 
 ## Usage
+
+### Current Version (2.0)
+
+1. **Install dependencies**: `pip install -r requirements.txt`
+2. **Upload firmware**: Upload `firmware_serial.py` to your Pico as `main.py`
+3. **Start PC service**: Run `python pc_service.py`
+4. **Press buttons**: Your macros will execute on the PC with full keyboard/mouse support
+
+### Legacy Versions
 
 1. **Plug in the MacroKeyboard to your PC.**
 2. The device will be recognized as a standard USB keyboard.

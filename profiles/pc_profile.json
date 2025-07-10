@@ -1,0 +1,31 @@
+{
+  "7": [
+    {"type": "key", "key": "a"}
+  ],
+  "9": [
+    {"type": "key", "key": "b"}
+  ],
+  "11": [
+    {"type": "key", "key": "c"}
+  ],
+  "13": [
+    {"type": "key_combo", "keys": ["ctrl", "z"]}
+  ],
+  "14": [
+    {"type": "key_combo", "keys": ["ctrl", "y"]}
+  ],
+  "17": [
+    {"type": "key", "key": "f1"}
+  ],
+  "18": [
+    {"type": "key", "key": "f2"}
+  ],
+  "20": [
+    {"type": "key", "key": "f3"}
+  ],
+  "22": [
+    {"type": "mouse_move", "x": 500, "y": 300},
+    {"type": "delay", "duration": 0.1},
+    {"type": "mouse_click", "button": "left"}
+  ]
+}
