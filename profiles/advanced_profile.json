@@ -1,0 +1,37 @@
+{
+  "7": [
+    {"type": "type", "text": "Hello World!"}
+  ],
+  "9": [
+    {"type": "key_combo", "keys": ["ctrl", "c"]},
+    {"type": "delay", "duration": 0.1},
+    {"type": "key_combo", "keys": ["ctrl", "v"]}
+  ],
+  "11": [
+    {"type": "key_combo", "keys": ["ctrl", "shift", "i"]}
+  ],
+  "13": [
+    {"type": "key_combo", "keys": ["ctrl", "z"]}
+  ],
+  "14": [
+    {"type": "key_combo", "keys": ["ctrl", "y"]}
+  ],
+  "17": [
+    {"type": "mouse_move", "x": 100, "y": 100},
+    {"type": "mouse_click", "button": "left"},
+    {"type": "delay", "duration": 0.5},
+    {"type": "type", "text": "Clicked at 100,100"}
+  ],
+  "18": [
+    {"type": "mouse_move", "x": 200, "y": 200},
+    {"type": "mouse_click", "button": "right"}
+  ],
+  "20": [
+    {"type": "scroll", "clicks": 3}
+  ],
+  "22": [
+    {"type": "key_combo", "keys": ["alt", "tab"]},
+    {"type": "delay", "duration": 0.2},
+    {"type": "key", "key": "enter"}
+  ]
+}
